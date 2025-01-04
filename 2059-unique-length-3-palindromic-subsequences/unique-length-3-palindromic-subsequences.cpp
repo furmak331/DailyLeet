@@ -1,18 +1,23 @@
 class Solution {
 public:
     int countPalindromicSubsequence(string s) {
-        int total = 0;
+        vector<int> first(26, INT_MAX);
+        vector<int> last(26, INT_MIN);
         
-        for (char c = 'a'; c <= 'z'; c++) {
-            int first = s.find(c);
-            int last = s.rfind(c);
-            
-            if (first != -1 && last != -1 && first < last) {
-                unordered_set<char> between;
-                for (int i = first + 1; i < last; i++) {
-                    between.insert(s[i]);
+        for (int i = 0; i < s.length(); i++) {
+            int idx = s[i] - 'a';
+            first[idx] = min(first[idx], i);
+            last[idx] = max(last[idx], i);
+        }
+        
+        int total = 0;
+        for (int i = 0; i < 26; i++) {
+            if (first[i] < last[i]) {
+                vector<bool> between(26, false);
+                for (int j = first[i] + 1; j < last[i]; j++) {
+                    between[s[j] - 'a'] = true;
                 }
-                total += between.size();
+                total += count(between.begin(), between.end(), true);
             }
         }
         
