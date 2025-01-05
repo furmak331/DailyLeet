@@ -17,8 +17,11 @@ public:
         for (int i = 0; i < n; i++) {
             cumulativeShift += netShifts[i];
             int currentPos = s[i] - 'a';                     
-            int newPos = (currentPos + cumulativeShift % 26 + 26) % 26;
-            s[i] = 'a' + newPos;                           
+         int shift = cumulativeShift % 26;
+        if (shift < 0) shift += 26;       
+        int newPos = (currentPos + shift) % 26;  
+        s[i] = 'a' + newPos;              
+                         
         }
 
         return s;
