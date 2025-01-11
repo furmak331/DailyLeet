@@ -2,16 +2,22 @@ class Solution {
 public:
     bool canConstruct(string s, int k) {
         if (k > s.length()) return false;
+        
         if (k == s.length()) return true;
         
-        int oddMask = 0;
-        
+        vector<int> freq(26, 0);
         for (char c : s) {
-            oddMask ^= (1 << (c - 'a'));
+            freq[c - 'a']++;
         }
         
-        int oddCount = __builtin_popcount(oddMask);
+        int oddCount = 0;
+        for (int count : freq) {
+            if (count % 2 != 0) {
+                oddCount++;
+            }
+        }
         
+       
         return oddCount <= k;
     }
 };
