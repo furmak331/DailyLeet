@@ -6,36 +6,35 @@ public:
         }
         
         int n = s.size();
-        int balance = 0;
-        int available = 0;
+        int minOpen = 0;  // minimum possible open parentheses
+        int maxOpen = 0;  // maximum possible open parentheses
         
         for (int i = 0; i < n; i++) {
             if (locked[i] == '1') {
-                balance += (s[i] == '(' ? 1 : -1);
+                if (s[i] == '(') {
+                    minOpen++;
+                    maxOpen++;
+                } else {
+                    minOpen--;
+                    maxOpen--;
+                }
             } else {
-                available++;
+                // For unlocked position, we can either use '(' or ')'
+                minOpen--;      // Consider placing ')'
+                maxOpen++;      // Consider placing '('
             }
             
-            if (balance + available < 0) {
-                return false;
-            }
-        }
-        
-        balance = 0;
-        available = 0;
-        
-        for (int i = n - 1; i >= 0; i--) {
-            if (locked[i] == '1') {
-                balance += (s[i] == ')' ? 1 : -1);
-            } else {
-                available++;
-            }
+            // Can't have negative open parentheses
+            minOpen = max(0, minOpen);
             
-            if (balance + available < 0) {
-                return false;
-            }
+            // If maxOpen becomes negative, we have too many forced ')'
+            if (maxOpen < 0) return false;
+            
+            // If minOpen > maxOpen, invalid state
+            if (minOpen > maxOpen) return false;
         }
         
-        return true;
+        // At end, need at least one way to have 0 open parentheses
+        return minOpen <= 0 && 0 <= maxOpen;
     }
 };
