@@ -1,7 +1,7 @@
 class Solution {
 public:
     int minimumLength(string s) {
-        unordered_map<char, int> m1;
+        map<char, int> m1;
 
         for (char c : s) {
             m1[c]++;
