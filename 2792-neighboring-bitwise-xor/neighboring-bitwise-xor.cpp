@@ -2,13 +2,11 @@ class Solution {
 public:
     bool doesValidArrayExist(vector<int>& derived) {
         int result=0;
-        int n=derived.size();
-        for(int i=0;i<n;i++){
+  
+        for(int i=0;i<derived.size();i++){
             result^=derived[i];
         }
-        if(result==0)
-        return true;
-        else{return false;}
+        return (bool)(!result);
 
     }
 };
